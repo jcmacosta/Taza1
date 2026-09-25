@@ -1,12 +1,7 @@
-/** @type {import('next').NextConfig} */
+/** @type {import('next').Next.jsConfig} */
 const nextConfig = {
-output: 'export',
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
-  },
-}
+  output: 'export',
+  basePath: '/Taza1',
+};
 
-export default nextConfig
+export default nextConfig;
