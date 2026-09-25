@@ -13,7 +13,7 @@ const Mug3D = dynamic(() => import("./mug-3d"), {
   ),
 })
 
-const PRECIO_TOTAL = 15000 // Precio base en pesos
+const PRECIO_TOTAL = 10000 // Precio base en pesos
 const NUMERO_WHATSAPP = "5491121694030" // País (54) + 9 (móvil) + área/número
 
 // Medidas físicas de la taza
@@ -21,7 +21,7 @@ const DIAMETRO_CM = 8 // diámetro del contorno imprimible
 const ALTO_CM = 9 // alto de la taza
 const DPI = 300
 const PX_POR_CM = DPI / 2.54 // 300 DPI => 118.11 px/cm
-const CIRCUNFERENCIA_CM = Math.PI * DIAMETRO_CM // ~25.13 cm
+const CIRCUNFERENCIA_CM = Math.PI * DIAMETRO_CM // ~20.13 cm
 // Lienzo de exportación a alta resolución (toda la vuelta de la taza)
 const EXPORT_W = Math.round(CIRCUNFERENCIA_CM * PX_POR_CM) // ~2969 px
 const EXPORT_H = Math.round(ALTO_CM * PX_POR_CM) // ~1063 px
@@ -86,7 +86,7 @@ export default function MugDesigner() {
     const mensaje =
       `Hola! Soy *${name}*. Ya aprobé el diseño de mi taza en la app.\n\n` +
       `• *Modalidad:* ${modalidad}\n` +
-      `• *Alias utilizado:* Mipago.app\n\n` +
+      `• *Alias utilizado:* mipago.app\n\n` +
       `Realicé la transferencia. Te envío el comprobante por acá y la imagen ya quedó procesada en las medidas exactas ` +
       `(${DIAMETRO_CM} cm de diámetro × ${ALTO_CM} cm de alto, vuelta completa a ${DPI} DPI) lista para sublimar.`
 
@@ -109,7 +109,7 @@ export default function MugDesigner() {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Ej: María Gómez"
+          placeholder="Ej: Yudit Gónzalez"
           className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none ring-offset-background transition focus:ring-2 focus:ring-ring"
         />
       </div>
@@ -158,7 +158,7 @@ export default function MugDesigner() {
         Total a transferir: <span className="font-bold text-sky-700">${formatARS(amount)}</span>
         <br />
         <span className="text-xs text-sky-800/80">
-          Alias Mercado Pago: <b>Mipago.app</b>
+          Alias Mercado Pago: <b>mipago.app</b>
         </span>
       </div>
 
