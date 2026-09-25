@@ -107,7 +107,7 @@ function MugModel({
         geometry={handleGeometry}
         material={ceramicMaterial}
         position={[RADIUS * 0.98, 0, 0]}
-        rotation={[0, 0, -Math.PI / 2 - 0.58]}
+        rotation={[0, 0, Math.PI / 2 - 0.58]}
       />
     </group>
   )
