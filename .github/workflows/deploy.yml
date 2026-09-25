@@ -1,1 +1,72 @@
+name: Desplegar sitio de Next.js a Pages
 
+on:
+  push:
+    branches: ["principal"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar código
+        uses: actions/checkout@v4
+      - name: Detectar gestor de paquetes
+        run: |
+          if [ -f "package-lock.json" ]; then
+            echo "MANAGER=npm" >> $GITHUB_ENV
+            echo "COMMAND=ci" >> $GITHUB_ENV
+            exit 0
+          elif [ -f "yarn.lock" ]; then
+            echo "MANAGER=yarn" >> $GITHUB_ENV
+            echo "COMMAND=install" >> $GITHUB_ENV
+            exit 0
+          else
+            echo "No se pudo determinar el gestor de paquetes"
+            exit 1
+          fi
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: ${{ env.MANAGER }}
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: next
+      - name: Restaurar caché
+        uses: actions/cache@v4
+        with:
+          path: |
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('*/package-lock.json', '/yarn.lock') }}-${{ hashFiles('.[jt]s', '*.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('*/package-lock.json', '*/yarn.lock') }}-
+          
+      - name: Instalar dependencias
+        run: ${{ env.MANAGER }} ${{ env.COMMAND }}
+      - name: Compilar con Next.js
+        run: ${{ env.MANAGER }} run build
+      - name: Subir artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Desplegar en GitHub
+        id: deployment
+        uses: actions/deploy-pages@v4
